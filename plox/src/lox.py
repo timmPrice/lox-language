@@ -11,15 +11,17 @@ class Lox:
             print("Usage: plox [script]")
             sys.exit(64)
         elif len(args) == 1:
-            run_file(args[0])
+            Lox.run_file(args[0])
         else: 
-            run_prompt()
+            Lox.run_prompt()
 
     @staticmethod
     def run_file(path: str) -> None:
         filepath = Path(path)
         source = filepath.read_text(encoding="utf-8")
-        run(source)
+        Lox.run(source)
+        if had_error:
+            sys.exit(65)
        
     @staticmethod
     def run_prompt() -> None:
@@ -28,7 +30,8 @@ class Lox:
                 line = input("> ")
                 if line.strip() == "":
                     continue
-                run(line)
+                Lox.run(line)
+                had_error = false
             except EOFError:
                 break
 
@@ -41,12 +44,12 @@ class Lox:
 
     @staticmethod
     def error(line: int, message: str) -> None: 
-        report(line, "", message)
+        Lox.report(line, "", message)
 
     @staticmethod
     def report(line: int, where: str, message: str) -> None:
         print(f"[line {line}] Error {where}: {message}" , file=sys.stderr)
-        had_error = true
+        Lox.had_error = true
 
 
 if __name__ == "__main__":
