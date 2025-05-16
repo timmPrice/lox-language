@@ -1,7 +1,6 @@
 import sys 
 from pathlib import Path 
 
-
 class Lox:
     had_error = False
     
@@ -52,5 +51,6 @@ class Lox:
         Lox.had_error = true
 
 
+edy-tmux
 if __name__ == "__main__":
     Lox.main(sys.argv[1:])

@@ -7,4 +7,3 @@ class Token:
 
     def __str__(self) -> str:
         return(f"{type} {lexeme} {literal} {line}")
-
