@@ -51,6 +51,5 @@ class Lox:
         Lox.had_error = true
 
 
-edy-tmux
 if __name__ == "__main__":
     Lox.main(sys.argv[1:])
