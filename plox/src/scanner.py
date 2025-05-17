@@ -13,14 +13,14 @@ class Scanner:
 
     def scan_tokens(self) -> List[Token]:
         while not self.isAtEnd():
-            self.start = current
+            self.start = self.current
             self.scan_token()
 
         self.tokens.append(Token(TokenType.EOF, "", None, self.line))   # append end-of-line token after scanning loop
         return self.tokens
 
     def isAtEnd(self):
-        return self.current >= len(self.source):
+        return self.current >= len(self.source)
 
     def scan_token(self) -> None:
         c = self.advance()
@@ -57,31 +57,35 @@ class Scanner:
                     self.add_token(TokenType.LESS)
             case "/": 
                 if self.match("/"):
-                    while(self.peek() != "\n" && not self.isAtEnd()):
+                    while(self.peek() != "\n" and not self.isAtEnd()):
                         self.advance()
                 else:
                     self.add_token(TokenType.SLASH)
-            case _: error(line, "Unexpected Character")
+            case " " | "\r" | "\t":
+                pass
+            case "\n":
+                self.line += 1
+            case _: error(self.line, "Unexpected Character")
 
     def advance(self) -> str:
         c = self.source[self.current]
         self.current += 1
         return c 
     
-    def add_token(self, a_type: TokenType, literal: Any = None) -> str:
+    def add_token(self, a_type: TokenType, literal: Any = None) -> None:
         text = self.source[self.start:self.current]
         self.tokens.append(Token(a_type, text, literal, self.line))
 
     def match(self, expected: str) -> bool:
         if not self.isAtEnd():
             return False
-        if source[current] != expected:
+        if self.source[self.current] != expected:
             return False
 
-        current++
+        self.current += 1
         return True
 
     def peek(self) -> str: 
         if self.isAtEnd():
-            return "/0"
-        return source[current]
+            return "\0"
+        return self.source[self.current]
