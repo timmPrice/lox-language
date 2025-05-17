@@ -1,4 +1,5 @@
-from token_type import TokenType 
+from lox import error
+from token_type import TokenType
 from token import Token
 from typing import List, Any
 
@@ -11,12 +12,15 @@ class Scanner:
         self.line = 1
 
     def scan_tokens(self) -> List[Token]:
-        while(self.current <= len(self.source))
+        while not self.isAtEnd():
             self.start = current
             self.scan_token()
 
-        self.tokens.append(Token(TokenType.EOF, "", None, self.line))
+        self.tokens.append(Token(TokenType.EOF, "", None, self.line))   # append end-of-line token after scanning loop
         return self.tokens
+
+    def isAtEnd(self):
+        return self.current >= len(self.source):
 
     def scan_token(self) -> None:
         c = self.advance()
@@ -31,6 +35,27 @@ class Scanner:
             case "+": self.add_token(TokenType.PLUS)
             case ";": self.add_token(TokenType.SEMICOLON)
             case "*": self.add_token(TokenType.STAR)
+            case "!": 
+                if self.match("="):
+                    self.add_token(TokenType.BANG_EQUAL)
+                else:
+                    self.add_token(TokenType.BANG)
+            case "=": 
+                if self.match("="):
+                    self.add_token(TokenType.EQUAL_EQUAL)
+                else:
+                    self.add_token(TokenType.EQUAL)
+            case "<":
+                if self.match("="):
+                    self.add_token(TokenType.GREATER_EQUAL)
+                else:
+                    self.add_token(TokenType.GREATER)
+            case ">":
+                if self.match("="):
+                    self.add_token(TokenType.LESS_EQUAL)
+                else:
+                    self.add_token(TokenType.LESS)
+            case _: error(line, "Unexpected Character")
 
     def advance(self) -> str:
         c = self.source[self.current]
@@ -39,4 +64,14 @@ class Scanner:
     
     def add_token(self, a_type: TokenType, literal: Any = None) -> str:
         text = self.source[self.start:self.current]
-        tokens.append(Token(a_type, text, literal, self.line))
+        self.tokens.append(Token(a_type, text, literal, self.line))
+
+    def match(self, expected: str) -> bool:
+        if not self.isAtEnd():
+            return False
+        if source[current] != expected:
+            return False
+
+        current++
+        return True
+
