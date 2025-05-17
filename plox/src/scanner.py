@@ -55,6 +55,12 @@ class Scanner:
                     self.add_token(TokenType.LESS_EQUAL)
                 else:
                     self.add_token(TokenType.LESS)
+            case "/": 
+                if self.match("/"):
+                    while(self.peek() != "\n" && not self.isAtEnd()):
+                        self.advance()
+                else:
+                    self.add_token(TokenType.SLASH)
             case _: error(line, "Unexpected Character")
 
     def advance(self) -> str:
@@ -75,3 +81,7 @@ class Scanner:
         current++
         return True
 
+    def peek(self) -> str: 
+        if self.isAtEnd():
+            return "/0"
+        return source[current]
