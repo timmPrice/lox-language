@@ -30,7 +30,7 @@ class Lox:
                 if line.strip() == "":
                     continue
                 Lox.run(line)
-                had_error = false
+                had_error = False 
             except EOFError:
                 break
 
@@ -48,7 +48,7 @@ class Lox:
     @staticmethod
     def report(line: int, where: str, message: str) -> None:
         print(f"[line {line}] Error {where}: {message}" , file=sys.stderr)
-        Lox.had_error = true
+        Lox.had_error = True 
 
 
 if __name__ == "__main__":
