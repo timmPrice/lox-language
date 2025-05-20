@@ -11,6 +11,25 @@ class Scanner:
         self.start = 0
         self.line = 1
 
+    keywords = {
+        "and": TokenType.AND,
+        "class":TokenType.CLASS ,
+        "else": TokenType.ELSE,
+        "false": TokenType.FALSE,
+        "fun": TokenType.FUN,
+        "for": TokenType.FOR,
+        "if": TokenType.IF,
+        "nil": TokenType.NIL,
+        "or": TokenType.OR,
+        "print": TokenType.PRINT,
+        "return": TokenType.RETURN,
+        "super": TokenType.SUPER,
+        "this": TokenType.THIS,
+        "true": TokenType.TRUE,
+        "var": TokenType.VAR,
+        "while": TokenType.WHILE,
+    }
+
     def scan_tokens(self) -> List[Token]:
         while not self.isAtEnd():
             self.start = self.current
@@ -70,6 +89,8 @@ class Scanner:
             case _: 
                 if c.isdigit():
                     self.number()
+                elif:
+                    self.identifier()
                 else:
                     error(self.line, "Unexpected Character")
 
