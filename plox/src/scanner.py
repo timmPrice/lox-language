@@ -128,19 +128,15 @@ class Scanner:
         self.add_token(TokenType.NUMBER, value)
 
     def isAlpha(self, c: str) -> bool:
-        if c.isalpha() or c == "_":
-            return True
-        else:
-            return False
+        return c.isalpha() or c == "_":
 
    def isAlphaNumeric(self, c: str) -> bool:
-       if self.isAlpha(c) or c.isdigit():
-           return True
-       else:
-           return False
-
+       return self.isAlpha(c) or c.isdigit():
+    
     def identifier(self) -> None:
         while self.isAlphaNumeric(self.peek()):
             self.advance()
 
         self.add_token(TokenType.IDENTIFIER)
+
+
