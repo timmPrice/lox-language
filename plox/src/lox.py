@@ -1,5 +1,6 @@
 import sys 
 from pathlib import Path 
+from lox_scanner import Scanner
 
 class Lox:
     had_error = False
@@ -19,7 +20,7 @@ class Lox:
         filepath = Path(path)
         source = filepath.read_text(encoding="utf-8")
         Lox.run(source)
-        if had_error:
+        if Lox.had_error:
             sys.exit(65)
        
     @staticmethod
@@ -30,14 +31,15 @@ class Lox:
                 if line.strip() == "":
                     continue
                 Lox.run(line)
-                had_error = False 
+                Lox.had_error = False 
             except EOFError:
                 break
 
     @staticmethod
     def run(source: str) -> None:
-        tokens = source.split() # this will be real tokenizaiton later
-
+        scanner = Scanner(source)
+        tokens = scanner.scan_tokens()
+        
         for token in tokens:
             print(token)
 
@@ -49,7 +51,6 @@ class Lox:
     def report(line: int, where: str, message: str) -> None:
         print(f"[line {line}] Error {where}: {message}" , file=sys.stderr)
         Lox.had_error = True 
-
 
 if __name__ == "__main__":
     Lox.main(sys.argv[1:])

@@ -1,4 +1,3 @@
-from lox import error
 from token_type import TokenType
 from token import Token
 from typing import List, Any
@@ -92,7 +91,7 @@ class Scanner:
                 elif self.isAlpha(c):
                     self.identifier()
                 else:
-                    error(self.line, "Unexpected Character")
+                    Lox.error(self.line, "Unexpected Character")
 
     def advance(self) -> str:
         c = self.source[self.current]
@@ -129,7 +128,7 @@ class Scanner:
                 self.advance()
 
         if self.isAtEnd():
-            error(self.line, "Unterminated String")
+            Lox.error(self.line, "Unterminated String")
             return
 
         self.advance() # consume closing """
@@ -149,10 +148,10 @@ class Scanner:
         self.add_token(TokenType.NUMBER, value)
 
     def isAlpha(self, c: str) -> bool:
-        return c.isalpha() or c == "_":
+        return c.isalpha() or c == "_"
 
-   def isAlphaNumeric(self, c: str) -> bool:
-       return self.isAlpha(c) or c.isdigit():
+    def isAlphaNumeric(self, c: str) -> bool:
+       return self.isAlpha(c) or c.isdigit()
     
     def identifier(self) -> None:
         while self.isAlphaNumeric(self.peek()):
