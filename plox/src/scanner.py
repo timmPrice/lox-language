@@ -67,7 +67,11 @@ class Scanner:
                 self.line += 1
             case '"':
                 self.string()
-            case _: error(self.line, "Unexpected Character")
+            case _: 
+                if c.isdigit():
+                    self.number()
+                else:
+                    error(self.line, "Unexpected Character")
 
     def advance(self) -> str:
         c = self.source[self.current]
@@ -92,6 +96,11 @@ class Scanner:
             return "\0"
         return self.source[self.current]
 
+    def peek_next(self) -> str:
+        if self.current + 1 == len(self.source):
+            return "\0"
+        return self.source[self.current + 1]
+
     def string(self) -> None:
         while self.peek() != '"' and not self.isAtEnd():
             if self.peek() == "\n":
@@ -102,6 +111,19 @@ class Scanner:
             error(self.line, "Unterminated String")
             return
 
-        self.advance() # closing "
+        self.advance() # consume closing """
         value = self.source[self.start + 1:self.current - 1] # exclude quotes
         self.add_token(TokenType.STRING, value)
+
+    def number(self) -> None:
+        while self.peek().isdigit():
+            self.advance()
+
+        if self.peek() == "." and self.peek_next().isdigit():
+            self.advance() # consume the "."
+            while self.peek().isdigit():
+                self.advance()
+       
+        value = float(self.source[self.start:self.current])
+        self.add_token(TokenType.NUMBER, value)
+
