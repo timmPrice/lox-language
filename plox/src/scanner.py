@@ -125,7 +125,7 @@ class Scanner:
                 self.advance()
        
         value = float(self.source[self.start:self.current])
-        self.add_token(TokenType.NUMBER,)
+        self.add_token(TokenType.NUMBER, value)
 
     def isAlpha(self, c: str) -> bool:
         if c.isalpha() or c == "_":
