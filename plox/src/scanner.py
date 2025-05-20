@@ -129,15 +129,15 @@ class Scanner:
 
     def isAlpha(self, c: str) -> bool:
         if c.isalpha() or c == "_":
-            return true
+            return True
         else:
-            return false
+            return False
 
    def isAlphaNumeric(self, c: str) -> bool:
        if self.isAlpha(c) or c.isdigit():
-           return true
+           return True
        else:
-           return false
+           return False
 
     def identifier(self) -> None:
         while self.isAlphaNumeric(self.peek()):
