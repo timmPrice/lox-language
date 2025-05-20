@@ -13,7 +13,7 @@ class Scanner:
 
     keywords = {
         "and": TokenType.AND,
-        "class":TokenType.CLASS ,
+        "class":TokenType.CLASS,
         "else": TokenType.ELSE,
         "false": TokenType.FALSE,
         "fun": TokenType.FUN,
@@ -89,7 +89,7 @@ class Scanner:
             case _: 
                 if c.isdigit():
                     self.number()
-                elif:
+                elif self.isAlpha(c):
                     self.identifier()
                 else:
                     error(self.line, "Unexpected Character")
@@ -157,7 +157,7 @@ class Scanner:
     def identifier(self) -> None:
         while self.isAlphaNumeric(self.peek()):
             self.advance()
-
-        self.add_token(TokenType.IDENTIFIER)
-
-
+        
+        text = self.source[self.start:self.current]
+        t_type = self.keywords.get(text, TokenType.IDENTIFIER)
+        self.add_token(t_type)
