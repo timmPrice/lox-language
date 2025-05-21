@@ -37,7 +37,7 @@ class Lox:
 
     @staticmethod
     def run(source: str) -> None:
-        scanner = Scanner(source)
+        scanner = Scanner(source, Lox.error)
         tokens = scanner.scan_tokens()
         
         for token in tokens:

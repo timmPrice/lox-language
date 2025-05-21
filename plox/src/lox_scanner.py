@@ -1,10 +1,11 @@
 from token_type import TokenType
 from token import Token
-from typing import List, Any
+from typing import List, Any, Callable
 
 class Scanner:
-    def __init__(self, source: str):
+    def __init__(self, source: str, error_fn: Callable[[int, str], None]):
         self.source = source 
+        self.error = error_fn
         self.tokens: List[Token] = []
         self.current = 0
         self.start = 0
@@ -91,7 +92,7 @@ class Scanner:
                 elif self.isAlpha(c):
                     self.identifier()
                 else:
-                    Lox.error(self.line, "Unexpected Character")
+                    self.error(self.line, "Unexpected Character")
 
     def advance(self) -> str:
         c = self.source[self.current]
@@ -128,7 +129,7 @@ class Scanner:
             self.advance()
 
         if self.isAtEnd():
-            Lox.error(self.line, "Unterminated String")
+            self.error(self.line, "Unterminated String")
             return
 
         self.advance() # consume closing """
