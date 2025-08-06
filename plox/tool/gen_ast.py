@@ -1,11 +1,11 @@
 import os
 
 def define_visitor(base_name: str, types: list[str], file):
-    print("class Visitor(ABC):", file = file)
+    print("class Visitor(ABC, Generic[R]):", file = file)
     for type_def in types:
         class_name = type_def.split(":")[0].strip()
         print("    @abstractmethod", file = file)
-        print(f"    def visit_{class_name.lower()}_{base_name.lower()}(self, expr: '{class_name}'):", file = file)
+        print(f"    def visit_{class_name.lower()}_{base_name.lower()}(self, expr: '{class_name}') -> R:", file = file)
         print("        pass", file = file)
         print("", file = file)
 
@@ -14,10 +14,13 @@ def define_ast(output_dir: str, base_name: str, types: list[str]):
     with open(path, "w") as file:
         print("from token import Token", file = file)
         print("from abc import ABC, abstractmethod", file = file)
+        print("from typing import Generic, TypeVar", file = file)
         print("", file = file)
-        print(f"class {base_name}(ABC):", file = file)
+        print("R = TypeVar('R')", file = file)
+        print("", file = file)
+        print(f"class {base_name}(ABC, Generic[R]):", file = file)
         print(f"    @abstractmethod", file = file) 
-        print(f"    def accept(self, visitor: 'Visitor'):", file = file)
+        print(f"    def accept(self, visitor: 'Visitor[R]') -> R:", file = file)
         print("         pass", file = file)
         print("", file = file)
 
