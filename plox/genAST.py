@@ -1,13 +1,28 @@
 import os
 
+
+def define_visitor(base_name: str, types: list[str], file):
+    print("class Visitor(ABC):", file = file)
+    for type_def in types:
+        class_name = type_def.split(":")[0].strip()
+        print("    @abstractmethod", file = file)
+        print(f"    def visit_{class_name.lower()}_{base_name.lower()}(self, expr: '{class_name}'):", file = file)
+        print("        pass", file = file)
+        print("", file = file)
+
 def define_ast(output_dir: str, base_name: str, types: list[str]):
     path = os.path.join(output_dir, f"{base_name.lower()}.py")
     with open(path, "w") as file:
         print("from token import Token", file = file)
+        print("from abc import ABC, abstractmethod", file = file)
         print("", file = file)
-        print(f"class {base_name}:", file = file)
-        print("    pass", file = file)
+        print(f"class {base_name}(ABC):", file = file)
+        print(f"    @abstractmethod", file = file) 
+        print(f"    def accept(self, visitor: 'Visitor'):", file = file)
+        print("         pass", file = file)
         print("", file = file)
+
+        define_visitor(base_name, types, file)
 
         for type_def in types:
             class_name, fields = map(str.strip, type_def.split(":"))
@@ -35,3 +50,4 @@ define_ast(
       "Unary    : Token operator, Expr right"
     ]
 )
+
