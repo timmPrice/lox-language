@@ -1,6 +1,5 @@
 import os
 
-
 def define_visitor(base_name: str, types: list[str], file):
     print("class Visitor(ABC):", file = file)
     for type_def in types:
@@ -39,6 +38,10 @@ def define_ast(output_dir: str, base_name: str, types: list[str]):
             for assignment in assignments:
                 print(assignment, file = file)
             print("", file = file)
+            
+            print("    def accept(self, visitor: Visitor):", file = file)
+            print(f"        return visitor.visit_{class_name.lower()}_expr(self)", file = file)
+            print(" ", file = file)
 
 define_ast(
     "./src",
