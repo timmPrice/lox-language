@@ -22,14 +22,3 @@ class ast_printer(Visitor[str]):
     def parenthesize(self, name: str, *exprs: Expr[str]) -> str:
         parts = " ".join(expr.accept(self) for expr in exprs)
         return f"({name} {parts})" 
-
-def main():
-    expression: Expr[str] = Binary(
-        Unary(Token("-", "-", None, 1), Literal(1234)),
-        Token("*", "*", None, 1),
-        Grouping(Literal(531.1234))
-    )
-    printer = ast_printer()
-    print(printer.print(expression))
-
-main()
