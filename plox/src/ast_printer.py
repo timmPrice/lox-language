@@ -1,8 +1,8 @@
-from token import Token
-from expr import Expr, Visitor, Binary, Grouping, Literal, Unary
+from .token import Token
+from .expr import Expr, Visitor, Binary, Grouping, Literal, Unary
 
-class ast_printer(Visitor[str]):
-    def print(self, expr: Expr[str]) -> str:
+class ASTPrinter(Visitor[str]):
+    def print(self, expr: Expr) -> str:
         return expr.accept(self)
    
     def visit_binary_expr(self, expr: Binary) -> str:
@@ -19,6 +19,6 @@ class ast_printer(Visitor[str]):
     def visit_unary_expr(self, expr: Unary) -> str:
         return self.parenthesize(expr.operator.lexeme, expr.right)
 
-    def parenthesize(self, name: str, *exprs: Expr[str]) -> str:
+    def parenthesize(self, name: str, *exprs: Expr) -> str:
         parts = " ".join(expr.accept(self) for expr in exprs)
         return f"({name} {parts})" 

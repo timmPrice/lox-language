@@ -1,4 +1,4 @@
-from token_type import TokenType
+from .token_type import TokenType
 
 class Token:
     def __init__(self, type: TokenType, lexeme: str, literal: object, line: int):

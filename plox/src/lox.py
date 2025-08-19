@@ -1,6 +1,8 @@
 import sys 
 from pathlib import Path 
-from lox_scanner import Scanner
+from .lox_scanner import Scanner
+from .parser import Parser
+from .ast_printer import ASTPrinter 
 
 class Lox:
     had_error = False
@@ -39,9 +41,13 @@ class Lox:
     def run(source: str) -> None:
         scanner = Scanner(source, Lox.error)
         tokens = scanner.scan_tokens()
-        
-        for token in tokens:
-            print(token)
+        parser = Parser(tokens, Lox.error)
+        expression = parser.parse()
+
+        if Lox.had_error or expression is None:
+            return 
+
+        print(ASTPrinter().print(expression))
 
     @staticmethod
     def error(line: int, message: str) -> None: 

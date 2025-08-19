@@ -1,4 +1,4 @@
-from token import Token
+from .token import Token
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
